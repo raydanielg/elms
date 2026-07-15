@@ -29,6 +29,13 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // Add final_score to enrollments if not present
+        if (!Schema::hasColumn('enrollments', 'final_score')) {
+            Schema::table('enrollments', function (Blueprint $table) {
+                $table->decimal('final_score', 5, 2)->default(0)->after('progress');
+            });
+        }
+
         // Extend existing certificates table
         Schema::table('certificates', function (Blueprint $table) {
             $table->foreignId('tenant_id')->nullable()->after('course_id')->constrained()->nullOnDelete();
