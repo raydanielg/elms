@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             CourseSeeder::class,
             AdvancedFeatureSeeder::class,
+            RecognitionEngineSeeder::class,
         ]);
     }
 }
