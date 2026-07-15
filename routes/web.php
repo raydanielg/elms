@@ -41,6 +41,10 @@ use App\Http\Controllers\BadgeController;
 use App\Http\Controllers\AwardController;
 use App\Http\Controllers\LeaderboardController;
 use App\Http\Controllers\TranscriptController;
+use App\Http\Controllers\InstructorLevelController;
+use App\Http\Controllers\EarningsDashboardController;
+use App\Http\Controllers\RevenueShareController;
+use App\Http\Controllers\RefundController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -270,4 +274,30 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/transcripts/generate', [TranscriptController::class, 'generate'])->name('transcripts.generate');
     Route::get('/transcripts/{transcript}', [TranscriptController::class, 'show'])->name('transcripts.show');
     Route::delete('/transcripts/{transcript}', [TranscriptController::class, 'destroy'])->name('transcripts.destroy');
+
+    // Instructor Monetization — Earnings Dashboard
+    Route::get('/earnings', [EarningsDashboardController::class, 'index'])->name('earnings.dashboard');
+    Route::get('/earnings/ledger', [EarningsDashboardController::class, 'transactionLedger'])->name('earnings.ledger');
+    Route::get('/earnings/withdrawals', [EarningsDashboardController::class, 'withdrawals'])->name('earnings.withdrawals');
+    Route::post('/earnings/withdrawals/request', [EarningsDashboardController::class, 'requestWithdrawal'])->name('earnings.withdrawals.request');
+    Route::post('/earnings/withdrawals/{withdrawal}/process', [EarningsDashboardController::class, 'processWithdrawal'])->name('earnings.withdrawals.process');
+
+    // Instructor Levels
+    Route::get('/instructor-levels', [InstructorLevelController::class, 'index'])->name('instructor-levels.index');
+    Route::post('/instructor-levels', [InstructorLevelController::class, 'store'])->name('instructor-levels.store');
+    Route::put('/instructor-levels/{level}', [InstructorLevelController::class, 'update'])->name('instructor-levels.update');
+    Route::delete('/instructor-levels/{level}', [InstructorLevelController::class, 'destroy'])->name('instructor-levels.destroy');
+    Route::get('/instructor-levels/progress', [InstructorLevelController::class, 'progress'])->name('instructor-levels.progress');
+    Route::post('/instructor-levels/recalculate', [InstructorLevelController::class, 'recalculateAll'])->name('instructor-levels.recalculate');
+    Route::post('/instructors/{instructor}/override-level', [InstructorLevelController::class, 'manualOverride'])->name('instructor-levels.override');
+
+    // Revenue Shares
+    Route::get('/revenue-shares', [RevenueShareController::class, 'index'])->name('revenue-shares.index');
+    Route::post('/revenue-shares', [RevenueShareController::class, 'store'])->name('revenue-shares.store');
+    Route::put('/revenue-shares/{revenueShare}', [RevenueShareController::class, 'update'])->name('revenue-shares.update');
+    Route::delete('/revenue-shares/{revenueShare}', [RevenueShareController::class, 'destroy'])->name('revenue-shares.destroy');
+
+    // Refunds
+    Route::get('/refunds', [RefundController::class, 'index'])->name('refunds.index');
+    Route::post('/refunds', [RefundController::class, 'store'])->name('refunds.store');
 });
