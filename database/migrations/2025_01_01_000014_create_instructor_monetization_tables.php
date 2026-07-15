@@ -142,5 +142,12 @@ return new class extends Migration
                 ]);
             });
         }
+
+        if (Schema::hasColumn('users', 'instructor_level_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->dropForeign(['instructor_level_id']);
+                $table->dropColumn('instructor_level_id');
+            });
+        }
     }
 };
