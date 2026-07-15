@@ -149,4 +149,79 @@ Route::middleware(['auth'])->group(function () {
         Route::post('withdrawals/{withdrawal}/approve', [WithdrawalController::class, 'approve'])->name('withdrawals.approve');
         Route::post('withdrawals/{withdrawal}/reject', [WithdrawalController::class, 'reject'])->name('withdrawals.reject');
     });
+
+    // Advanced Features
+
+    // Payment Webhook (no auth - external callbacks)
+    Route::post('/api/v1/payments/webhook/{gateway}', [PaymentGatewayController::class, 'handleWebhook'])->name('api.payments.webhook');
+
+    // Wishlist
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{course}/toggle', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
+    Route::delete('/wishlist/{wishlist}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+    // Referrals
+    Route::get('/referrals', [ReferralController::class, 'index'])->name('referrals.index');
+    Route::post('/referrals/{course}/generate', [ReferralController::class, 'generateLink'])->name('referrals.generate');
+
+    // Coupons
+    Route::post('/coupons/validate', [CouponController::class, 'validateCoupon'])->name('coupons.validate');
+
+    // Course Versions
+    Route::get('/courses/{course}/versions', [CourseVersionController::class, 'index'])->name('course-versions.index');
+    Route::post('/courses/{course}/versions/create', [CourseVersionController::class, 'createVersion'])->name('course-versions.create');
+    Route::post('/courses/{course}/versions/{version}/publish', [CourseVersionController::class, 'publish'])->name('course-versions.publish');
+    Route::get('/courses/{course}/versions/{version}', [CourseVersionController::class, 'show'])->name('course-versions.show');
+
+    // Course Approvals
+    Route::post('/courses/{course}/request-approval', [CourseApprovalController::class, 'requestApproval'])->name('course-approvals.request');
+    Route::post('/course-approvals/{approval}/approve', [CourseApprovalController::class, 'approve'])->name('course-approvals.approve');
+    Route::post('/course-approvals/{approval}/reject', [CourseApprovalController::class, 'reject'])->name('course-approvals.reject');
+
+    // Theme
+    Route::get('/theme', [ThemeController::class, 'edit'])->name('theme.edit');
+    Route::put('/theme', [ThemeController::class, 'update'])->name('theme.update');
+
+    // SMS
+    Route::get('/sms/gateways', [SmsController::class, 'gateways'])->name('sms.gateways');
+    Route::post('/sms/gateways', [SmsController::class, 'storeGateway'])->name('sms.gateways.store');
+    Route::put('/sms/gateways/{gateway}', [SmsController::class, 'updateGateway'])->name('sms.gateways.update');
+    Route::get('/sms/templates', [SmsController::class, 'templates'])->name('sms.templates');
+    Route::put('/sms/templates/{template}', [SmsController::class, 'updateTemplate'])->name('sms.templates.update');
+    Route::get('/sms/campaigns', [SmsController::class, 'campaigns'])->name('sms.campaigns');
+    Route::get('/sms/campaigns/create', [SmsController::class, 'createCampaign'])->name('sms.campaigns.create');
+    Route::post('/sms/campaigns', [SmsController::class, 'storeCampaign'])->name('sms.campaigns.store');
+    Route::get('/sms/credits', [SmsController::class, 'credits'])->name('sms.credits');
+    Route::post('/sms/credits/purchase', [SmsController::class, 'purchaseCredits'])->name('sms.credits.purchase');
+
+    // Admin-only advanced features
+    Route::middleware('role:super_admin|admin')->group(function () {
+        Route::get('/feature-flags', [FeatureFlagController::class, 'index'])->name('feature-flags.index');
+        Route::put('/feature-flags/{flag}', [FeatureFlagController::class, 'update'])->name('feature-flags.update');
+        Route::post('/feature-flags/{flag}/toggle', [FeatureFlagController::class, 'toggleGlobal'])->name('feature-flags.toggle');
+
+        Route::get('/payment-gateways', [PaymentGatewayController::class, 'index'])->name('payment-gateways.index');
+        Route::post('/payment-gateways', [PaymentGatewayController::class, 'store'])->name('payment-gateways.store');
+        Route::put('/payment-gateways/{gateway}', [PaymentGatewayController::class, 'update'])->name('payment-gateways.update');
+        Route::delete('/payment-gateways/{gateway}', [PaymentGatewayController::class, 'destroy'])->name('payment-gateways.destroy');
+        Route::get('/payment-gateways/logs', [PaymentGatewayController::class, 'webhookLogs'])->name('payment-gateways.logs');
+
+        Route::resource('currencies', CurrencyController::class)->except(['create', 'show', 'edit']);
+        Route::resource('coupons', CouponController::class)->except(['create', 'show', 'edit']);
+        Route::resource('custom-fields', CustomFieldController::class)->except(['create', 'show', 'edit']);
+        Route::resource('automation-rules', AutomationRuleController::class)->except(['create', 'show', 'edit']);
+        Route::resource('notification-templates', NotificationTemplateController::class)->except(['create', 'show', 'edit']);
+        Route::put('/notification-triggers/{event}', [NotificationTemplateController::class, 'updateTrigger'])->name('notification-triggers.update');
+        Route::get('/course-approvals', [CourseApprovalController::class, 'index'])->name('course-approvals.index');
+
+        Route::resource('webhooks', WebhookEndpointController::class)->except(['create', 'show', 'edit']);
+        Route::get('/webhooks/logs', [WebhookEndpointController::class, 'logs'])->name('webhooks.logs');
+
+        Route::get('/api-keys', [ApiKeyController::class, 'index'])->name('api-keys.index');
+        Route::post('/api-keys', [ApiKeyController::class, 'store'])->name('api-keys.store');
+        Route::delete('/api-keys/{apiKey}', [ApiKeyController::class, 'destroy'])->name('api-keys.destroy');
+
+        Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+        Route::get('/audit-logs/export', [AuditLogController::class, 'export'])->name('audit-logs.export');
+    });
 });
