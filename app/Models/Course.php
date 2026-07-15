@@ -11,11 +11,11 @@ class Course extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tenant_id', 'owner_id', 'category_id', 'title', 'slug', 'description', 'thumbnail', 'preview_video', 'level', 'status', 'visibility', 'price', 'compare_price', 'language', 'drip_enabled', 'drip_days', 'has_certificate', 'duration_hours', 'sort_order', 'published_at'];
+    protected $fillable = ['tenant_id', 'owner_id', 'category_id', 'title', 'slug', 'description', 'thumbnail', 'preview_video', 'level', 'status', 'visibility', 'price', 'compare_price', 'pricing_model', 'subscription_interval', 'subscription_price', 'is_paid_certificate', 'certificate_price', 'language', 'drip_enabled', 'drip_days', 'has_certificate', 'duration_hours', 'sort_order', 'published_at'];
 
     protected function casts(): array
     {
-        return ['drip_enabled' => 'boolean', 'has_certificate' => 'boolean', 'published_at' => 'datetime'];
+        return ['drip_enabled' => 'boolean', 'has_certificate' => 'boolean', 'is_paid_certificate' => 'boolean', 'published_at' => 'datetime', 'price' => 'decimal:2', 'compare_price' => 'decimal:2', 'subscription_price' => 'decimal:2', 'certificate_price' => 'decimal:2'];
     }
 
     public function tenant(): BelongsTo
