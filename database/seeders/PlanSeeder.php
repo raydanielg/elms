@@ -86,7 +86,7 @@ class PlanSeeder extends Seeder
                 'name' => 'Solo Teacher Pro',
                 'slug' => 'solo-teacher-pro',
                 'type' => 'solo',
-                'description' 'Unlock unlimited courses, lower commission rates, and advanced marketing tools for serious creators.',
+                'description' => 'Unlock unlimited courses, lower commission rates, and advanced marketing tools for serious creators.',
                 'price_monthly' => 19.00,
                 'price_yearly' => 190.00,
                 'max_teachers' => 1,
