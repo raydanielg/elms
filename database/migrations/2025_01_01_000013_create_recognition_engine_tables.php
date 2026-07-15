@@ -8,25 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // Extend existing certificates table
-        Schema::table('certificates', function (Blueprint $table) {
-            $table->foreignId('tenant_id')->nullable()->after('course_id')->constrained()->nullOnDelete();
-            $table->foreignId('template_id')->nullable()->after('tenant_id')->constrained('certificate_templates')->nullOnDelete();
-            $table->string('type')->default('course_completion')->after('template_id');
-            $table->string('status')->default('valid')->after('type');
-            $table->string('title')->nullable()->after('status');
-            $table->string('pdf_path')->nullable()->after('final_score');
-            $table->string('social_image_path')->nullable()->after('pdf_path');
-            $table->string('signature_path')->nullable()->after('social_image_path');
-            $table->string('signature_title')->nullable()->after('signature_path');
-            $table->string('data_hash')->nullable()->after('signature_title');
-            $table->json('metadata')->nullable()->after('data_hash');
-            $table->foreignId('issued_by')->nullable()->after('metadata')->constrained('users')->nullOnDelete();
-            $table->timestamp('revoked_at')->nullable()->after('issued_at');
-            $table->text('revocation_reason')->nullable()->after('revoked_at');
-        });
-
-        // Certificate Templates
+        // Certificate Templates (must exist before certificates FK)
         Schema::create('certificate_templates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->nullable()->constrained()->nullOnDelete();
@@ -45,6 +27,24 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->integer('version')->default(1);
             $table->timestamps();
+        });
+
+        // Extend existing certificates table
+        Schema::table('certificates', function (Blueprint $table) {
+            $table->foreignId('tenant_id')->nullable()->after('course_id')->constrained()->nullOnDelete();
+            $table->foreignId('template_id')->nullable()->after('tenant_id')->constrained('certificate_templates')->nullOnDelete();
+            $table->string('type')->default('course_completion')->after('template_id');
+            $table->string('status')->default('valid')->after('type');
+            $table->string('title')->nullable()->after('status');
+            $table->string('pdf_path')->nullable()->after('final_score');
+            $table->string('social_image_path')->nullable()->after('pdf_path');
+            $table->string('signature_path')->nullable()->after('social_image_path');
+            $table->string('signature_title')->nullable()->after('signature_path');
+            $table->string('data_hash')->nullable()->after('signature_title');
+            $table->json('metadata')->nullable()->after('data_hash');
+            $table->foreignId('issued_by')->nullable()->after('metadata')->constrained('users')->nullOnDelete();
+            $table->timestamp('revoked_at')->nullable()->after('issued_at');
+            $table->text('revocation_reason')->nullable()->after('revoked_at');
         });
 
         // Badges
