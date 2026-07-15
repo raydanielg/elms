@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             AdvancedFeatureSeeder::class,
             RecognitionEngineSeeder::class,
+            InstructorMonetizationSeeder::class,
         ]);
     }
 }
