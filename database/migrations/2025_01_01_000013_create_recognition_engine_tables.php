@@ -198,5 +198,11 @@ return new class extends Migration
                 'metadata', 'issued_by', 'revoked_at', 'revocation_reason'
             ]);
         });
+
+        if (Schema::hasColumn('enrollments', 'final_score')) {
+            Schema::table('enrollments', function (Blueprint $table) {
+                $table->dropColumn('final_score');
+            });
+        }
     }
 };

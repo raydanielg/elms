@@ -10,11 +10,11 @@ class Enrollment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'course_id', 'status', 'progress', 'enrolled_at', 'completed_at', 'last_accessed_at'];
+    protected $fillable = ['user_id', 'course_id', 'status', 'progress', 'final_score', 'enrolled_at', 'completed_at', 'last_accessed_at'];
 
     protected function casts(): array
     {
-        return ['progress' => 'decimal:2', 'enrolled_at' => 'datetime', 'completed_at' => 'datetime', 'last_accessed_at' => 'datetime'];
+        return ['progress' => 'decimal:2', 'final_score' => 'decimal:2', 'enrolled_at' => 'datetime', 'completed_at' => 'datetime', 'last_accessed_at' => 'datetime'];
     }
 
     public function user(): BelongsTo
