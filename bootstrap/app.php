@@ -12,8 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withProviders([
-    \App\Providers\GatewayServiceProvider::class,
-])
+        \App\Providers\GatewayServiceProvider::class,
+    ])
+    ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'tenant' => \App\Http\Middleware\TenantMiddleware::class,
