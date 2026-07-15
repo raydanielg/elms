@@ -9,7 +9,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 stagger">
         @forelse($badges as $item)
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 text-center card-sm">
-            <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-3xl mb-3" style="background: {{ $badge->badge->color }}20">
+            <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-3xl mb-3" style="background: {{ $item->badge->color }}20">
                 @if($item->badge->icon_image)<img src="{{ asset('storage/' . $item->badge->icon_image) }}" class="w-16 h-16 rounded-2xl object-cover">@else<span style="color: {{ $item->badge->color }}">{{ $item->badge->icon ?? '🏆' }}</span>@endif
             </div>
             <p class="font-bold text-gray-800 text-sm">{{ $item->badge->name }}</p>

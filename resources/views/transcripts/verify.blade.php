@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('layouts.app', ['title' => 'Verify Transcript'])
 
 @section('page_title', 'Verify Transcript')
 
