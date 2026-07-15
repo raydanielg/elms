@@ -30,7 +30,8 @@ class InstructorLevel extends Model
             ->where('status', 'completed')
             ->count();
 
-        $avgRating = $instructor->courses()->published()->avg('rating') ?? 0;
+        $courses = $instructor->courses()->where('status', 'published')->get();
+        $avgRating = $courses->isNotEmpty() ? $courses->avg('average_rating') : 0;
 
         return static::where('is_active', true)
             ->where('min_sales', '<=', $totalSales)

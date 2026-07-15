@@ -71,7 +71,8 @@ class InstructorLevelService
             ->where('status', 'completed')
             ->count();
 
-        $avgRating = $instructor->courses()->where('status', 'published')->avg('rating') ?? 0;
+        $courses = $instructor->courses()->where('status', 'published')->get();
+        $avgRating = $courses->isNotEmpty() ? $courses->avg('average_rating') : 0;
 
         if (!$next) {
             return [
