@@ -26,7 +26,7 @@ class AdvancedFeatureSeeder extends Seeder
             ['key' => 'certificates', 'label' => 'Certificates', 'description' => 'Auto-generated course certificates'],
             ['key' => 'marketplace', 'label' => 'Marketplace', 'description' => 'Public course marketplace for solo teachers'],
             ['key' => 'affiliate_program', 'label' => 'Affiliate Program', 'description' => 'Referral links and commission tracking'],
-            ['key' => 'ai_features', 'label' => 'AI Features', 'description' 'AI quiz generator, content summarizer, chat assistant'],
+            ['key' => 'ai_features', 'label' => 'AI Features', 'description' => 'AI quiz generator, content summarizer, chat assistant'],
             ['key' => 'proctoring', 'label' => 'Exam Proctoring', 'description' => 'Webcam monitoring for high-stakes quizzes'],
             ['key' => 'custom_fields', 'label' => 'Custom Fields', 'description' => 'Dynamic forms with custom fields'],
             ['key' => 'automation_rules', 'label' => 'Automation Rules', 'description' => 'If-this-then-that workflow engine'],
