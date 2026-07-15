@@ -8,6 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // Add instructor_level_id to users table
+        if (!Schema::hasColumn('users', 'instructor_level_id')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->foreignId('instructor_level_id')->nullable()->after('tenant_id')->constrained()->nullOnDelete();
+            });
+        }
+
         // Extend courses table with pricing_model
         if (!Schema::hasColumn('courses', 'pricing_model')) {
             Schema::table('courses', function (Blueprint $table) {
