@@ -28,8 +28,23 @@
         }
     </script>
     <style>
-        @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
-        .animate-fade { animation: fadeIn 0.3s ease-out both; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px) } to { opacity:1; transform:translateY(0) } }
+        .animate-fade { animation: fadeIn 0.4s ease-out both; }
+        @keyframes slideDown { from { opacity:0; transform:translateY(-20px) scale(0.95) } to { opacity:1; transform:translateY(0) scale(1) } }
+        @keyframes slideUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
+        @keyframes scaleIn { from { opacity:0; transform:scale(0.9) } to { opacity:1; transform:scale(1) } }
+        .animate-slide-down { animation: slideDown 0.4s ease-out both; }
+        .animate-slide-up { animation: slideUp 0.3s ease-out both; }
+        .animate-scale-in { animation: scaleIn 0.3s ease-out both; }
+        .stagger > * { opacity: 0; animation: slideUp 0.4s ease-out forwards; }
+        .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+        .stagger > *:nth-child(2) { animation-delay: 0.1s; }
+        .stagger > *:nth-child(3) { animation-delay: 0.15s; }
+        .stagger > *:nth-child(4) { animation-delay: 0.2s; }
+        .stagger > *:nth-child(5) { animation-delay: 0.25s; }
+        .stagger > *:nth-child(6) { animation-delay: 0.3s; }
+        .stagger > *:nth-child(7) { animation-delay: 0.35s; }
+        .stagger > *:nth-child(8) { animation-delay: 0.4s; }
         .sidebar-link { transition: all 0.2s ease; }
         .sidebar-link:hover { background: rgba(255,255,255,0.06); }
         .sidebar-link.active { background: rgba(255,255,255,0.08); color: #fff; }
@@ -43,7 +58,11 @@
         .btn-loading::after { content: ''; position: absolute; top: 50%; left: 50%; width: 18px; height: 18px; margin: -9px 0 0 -9px; border: 2.5px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: btnSpin 0.6s linear infinite; }
         @keyframes btnSpin { to { transform: rotate(360deg); } }
         .swal2-popup { font-family: 'Nunito', sans-serif !important; border-radius: 12px !important; }
-        .swal2-toast { font-family: 'Nunito', sans-serif !important; border-radius: 10px !important; box-shadow: 0 4px 24px rgba(0,0,0,0.12) !important; }
+        .swal2-toast { font-family: 'Nunito', sans-serif !important; border-radius: 14px !important; box-shadow: 0 8px 32px rgba(90,9,23,0.15), 0 2px 8px rgba(0,0,0,0.08) !important; padding: 14px 20px !important; min-width: 320px !important; }
+        .swal2-toast .swal2-icon { width: 24px !important; height: 24px !important; margin: 0 10px 0 0 !important; }
+        .swal2-toast .swal2-icon.swal2-success .swal2-success-ring { width: 28px !important; height: 28px !important; }
+        .swal2-toast .swal2-title { font-size: 14px !important; font-weight: 800 !important; text-align: left !important; }
+        .swal2-toast .swal2-timer-progress-bar { background: linear-gradient(90deg, #5A0917, #F6891F) !important; height: 3px !important; border-radius: 0 0 14px 14px !important; }
         .swal2-icon { border-radius: 50% !important; }
         .swal2-title { font-size: 14px !important; font-weight: 700 !important; padding: 0 !important; }
         .swal2-html-container { font-size: 12px !important; margin: 0 !important; }
@@ -85,51 +104,102 @@
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
+                <a href="{{ route('courses.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('courses.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     <span>Courses</span>
                 </a>
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
+                <a href="{{ route('enrollments.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('enrollments.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
-                    <span>Assessments</span>
+                    <span>My Enrollments</span>
                 </a>
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
+                <a href="{{ route('certificates.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('certificates.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
                     <span>Certificates</span>
                 </a>
             </div>
 
+            <div class="sidebar-group">
+                <a href="{{ route('marketplace.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('marketplace.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span>Marketplace</span>
+                </a>
+            </div>
+
+            {{-- Engagement --}}
+            <div class="pt-3 pb-1 px-3">
+                <span class="text-[10px] font-bold text-maroon-300/40 uppercase tracking-wider">Engagement</span>
+            </div>
+
+            <div class="sidebar-group">
+                <a href="{{ route('announcements.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('announcements.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317zM22 13a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span>Announcements</span>
+                </a>
+            </div>
+
+            <div class="sidebar-group">
+                <a href="{{ route('notifications.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('notifications.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span>Notifications</span>
+                </a>
+            </div>
+
+            @if(auth()->user()->isSoloTeacher())
+            <div class="sidebar-group">
+                <a href="{{ route('wallet.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('wallet.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span>Wallet</span>
+                </a>
+            </div>
+            @endif
+
+            @if(auth()->user()->isSuperAdmin())
             {{-- Management --}}
             <div class="pt-3 pb-1 px-3">
                 <span class="text-[10px] font-bold text-maroon-300/40 uppercase tracking-wider">Management</span>
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
+                <a href="{{ route('users.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('users.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
                     <span>Users</span>
                 </a>
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
+                <a href="{{ route('tenants.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('tenants.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-                    <span>Institutions</span>
+                    <span>Tenants</span>
                 </a>
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
+                <a href="{{ route('plans.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('plans.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <span>Billing & Plans</span>
+                    <span>Plans & Billing</span>
                 </a>
             </div>
+
+            <div class="sidebar-group">
+                <a href="{{ route('transactions.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('transactions.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span>Transactions</span>
+                </a>
+            </div>
+
+            <div class="sidebar-group">
+                <a href="{{ route('withdrawals.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('withdrawals.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <span>Withdrawals</span>
+                </a>
+            </div>
+            @endif
 
             {{-- System --}}
             <div class="pt-3 pb-1 px-3">
@@ -137,14 +207,14 @@
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
-                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                    <span>Analytics</span>
+                <a href="{{ route('profile.show') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <span>Profile</span>
                 </a>
             </div>
 
             <div class="sidebar-group">
-                <a href="#" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium">
+                <a href="{{ route('settings.index') }}" class="sidebar-link w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-maroon-100 text-sm font-medium {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                     <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                     <span>Settings</span>
                 </a>
@@ -283,12 +353,13 @@
 
         const Toast = Swal.mixin({
             toast: true,
-            position: 'top-end',
+            position: 'top',
             showConfirmButton: false,
             timer: 4000,
             timerProgressBar: true,
             customClass: { popup: 'swal2-toast' },
             didOpen: (toast) => {
+                toast.style.animation = 'slideDown 0.4s ease-out';
                 toast.addEventListener('mouseenter', Swal.stopTimer);
                 toast.addEventListener('mouseleave', Swal.resumeTimer);
             }
@@ -327,10 +398,11 @@
         }
 
         window.notify = function(type, title, message) {
-            const colors = { success: '#5A0917', error: '#C22F2F', warning: '#B98207', info: '#1D6FA5' };
+            const colors = { success: '#1E7A46', error: '#C22F2F', warning: '#B98207', info: '#1D6FA5' };
+            const icons = { success: '✓', error: '✕', warning: '⚠', info: 'ℹ' };
             Toast.fire({
                 icon: type,
-                title: title + (message ? ': ' + message : ''),
+                title: (title || 'Success') + (message ? ' — ' + message : ''),
                 iconColor: colors[type] || '#5A0917'
             });
         };
@@ -569,11 +641,23 @@
 
         window.openModal = function(id) {
             const modal = document.getElementById(id);
-            if (modal) modal.classList.remove('hidden');
+            if (modal) {
+                modal.classList.remove('hidden');
+                const content = modal.querySelector('.modal-content');
+                if (content) content.classList.add('animate-scale-in');
+            }
         };
         window.closeModal = function(id) {
             const modal = document.getElementById(id);
-            if (modal) modal.classList.add('hidden');
+            if (modal) {
+                const content = modal.querySelector('.modal-content');
+                if (content) {
+                    content.style.animation = 'scaleIn 0.2s ease-out reverse';
+                    setTimeout(() => { modal.classList.add('hidden'); content.style.animation = ''; }, 200);
+                } else {
+                    modal.classList.add('hidden');
+                }
+            }
         };
 
         function initAjax() {
