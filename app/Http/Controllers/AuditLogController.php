@@ -9,7 +9,7 @@ class AuditLogController extends Controller
 {
     public function index(Request $request)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $query = AuditLog::where('tenant_id', auth()->user()->tenant_id);
 
         if ($request->filled('action')) $query->where('action', 'like', "%{$request->action}%");
@@ -24,7 +24,7 @@ class AuditLogController extends Controller
 
     public function export()
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $logs = AuditLog::where('tenant_id', auth()->user()->tenant_id)->latest()->get();
         $filename = 'audit-logs-' . now()->format('Y-m-d') . '.csv';
         $headers = ['Content-Type' => 'text/csv'];

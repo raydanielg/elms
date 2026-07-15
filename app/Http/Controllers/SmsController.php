@@ -15,7 +15,7 @@ class SmsController extends Controller
 {
     public function gateways()
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $gateways = SmsGateway::orderBy('priority')->get();
         $manager = app(SmsManager::class);
         $availableDrivers = $manager->availableDrivers() ?? ['africas_talking', 'beem_africa', 'twilio'];
@@ -24,7 +24,7 @@ class SmsController extends Controller
 
     public function storeGateway(Request $request)
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $validated = $request->validate([
             'driver' => 'required|string|unique:sms_gateways,driver',
             'label' => 'required|string',
@@ -39,21 +39,21 @@ class SmsController extends Controller
 
     public function updateGateway(Request $request, SmsGateway $gateway)
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $gateway->update($request->only(['label', 'priority', 'credentials', 'sender_id', 'is_active']));
         return response()->json(['message' => 'SMS gateway updated']);
     }
 
     public function templates()
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $templates = SmsTemplate::orderBy('event')->get();
         return view('sms.templates', compact('templates'));
     }
 
     public function updateTemplate(Request $request, SmsTemplate $template)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $template->update($request->only(['template', 'is_active', 'category']));
         return response()->json(['message' => 'SMS template updated']);
     }

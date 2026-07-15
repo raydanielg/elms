@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware): void {
+    ->withProviders([
+    \App\Providers\GatewayServiceProvider::class,
+])
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'tenant' => \App\Http\Middleware\TenantMiddleware::class,

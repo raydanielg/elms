@@ -9,14 +9,14 @@ class ThemeController extends Controller
 {
     public function edit()
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $theme = TenantTheme::firstOrCreate(['tenant_id' => auth()->user()->tenant_id]);
         return view('themes.edit', compact('theme'));
     }
 
     public function update(Request $request)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $validated = $request->validate([
             'primary_color' => 'nullable|string',
             'secondary_color' => 'nullable|string',

@@ -9,7 +9,7 @@ class AutomationRuleController extends Controller
 {
     public function index()
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $rules = AutomationRule::where('tenant_id', auth()->user()->tenant_id)
             ->orWhereNull('tenant_id')
             ->latest()->get();
@@ -34,7 +34,7 @@ class AutomationRuleController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
@@ -51,14 +51,14 @@ class AutomationRuleController extends Controller
 
     public function update(Request $request, AutomationRule $rule)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $rule->update($request->only(['name', 'description', 'conditions', 'action_class', 'action_params', 'is_active']));
         return response()->json(['message' => 'Automation rule updated']);
     }
 
     public function destroy(AutomationRule $rule)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $rule->delete();
         return response()->json(['message' => 'Automation rule deleted']);
     }

@@ -11,7 +11,7 @@ class CourseApprovalController extends Controller
 {
     public function index(Request $request)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin'])) abort(403);
         $query = CourseApproval::with('course', 'requestedBy');
 
         if ($request->filled('status')) $query->where('status', $request->status);
@@ -23,7 +23,7 @@ class CourseApprovalController extends Controller
 
     public function requestApproval(Request $request, Course $course)
     {
-        $this->authorize('teacherOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $existing = CourseApproval::where('course_id', $course->id)->where('status', 'pending')->first();
         if ($existing) return back()->with('error', 'Approval already pending.');
 
@@ -39,7 +39,7 @@ class CourseApprovalController extends Controller
 
     public function approve(Request $request, CourseApproval $approval)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin'])) abort(403);
         $approval->update([
             'status' => 'approved',
             'reviewed_by' => auth()->id(),
@@ -61,7 +61,7 @@ class CourseApprovalController extends Controller
 
     public function reject(Request $request, CourseApproval $approval)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin'])) abort(403);
         $validated = $request->validate(['review_notes' => 'required|string']);
         $approval->update([
             'status' => 'rejected',

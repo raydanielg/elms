@@ -9,7 +9,7 @@ class CouponController extends Controller
 {
     public function index()
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $coupons = Coupon::where('tenant_id', auth()->user()->tenant_id)
             ->orWhereNull('tenant_id')->latest()->paginate(20);
         return view('coupons.index', compact('coupons'));
@@ -17,7 +17,7 @@ class CouponController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $validated = $request->validate([
             'code' => 'required|string|unique:coupons,code',
             'type' => 'required|in:percentage,fixed',
@@ -36,14 +36,14 @@ class CouponController extends Controller
 
     public function update(Request $request, Coupon $coupon)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $coupon->update($request->only(['type', 'value', 'min_purchase', 'usage_limit', 'starts_at', 'expires_at', 'course_ids', 'is_active']));
         return response()->json(['message' => 'Coupon updated']);
     }
 
     public function destroy(Coupon $coupon)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $coupon->delete();
         return response()->json(['message' => 'Coupon deleted']);
     }

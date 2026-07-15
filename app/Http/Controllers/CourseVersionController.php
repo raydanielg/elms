@@ -10,14 +10,14 @@ class CourseVersionController extends Controller
 {
     public function index(Course $course)
     {
-        $this->authorize('teacherOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $versions = CourseVersion::where('course_id', $course->id)->latest()->get();
         return view('course-versions.index', compact('versions', 'course'));
     }
 
     public function createVersion(Course $course)
     {
-        $this->authorize('teacherOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $lastVersion = CourseVersion::where('course_id', $course->id)->max('version_number') ?? 0;
 
         $snapshot = [
@@ -39,7 +39,7 @@ class CourseVersionController extends Controller
 
     public function publish(Course $course, CourseVersion $version)
     {
-        $this->authorize('teacherOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $snapshot = $version->content_snapshot;
 
         if (isset($snapshot['title'])) $course->update(['title' => $snapshot['title']]);
@@ -57,7 +57,7 @@ class CourseVersionController extends Controller
 
     public function show(Course $course, CourseVersion $version)
     {
-        $this->authorize('teacherOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         return view('course-versions.show', compact('version', 'course'));
     }
 }

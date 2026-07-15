@@ -9,7 +9,7 @@ class CustomFieldController extends Controller
 {
     public function index()
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $fields = CustomField::where('tenant_id', auth()->user()->tenant_id)
             ->orWhereNull('tenant_id')
             ->orderBy('sort_order')->get();
@@ -18,7 +18,7 @@ class CustomFieldController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $validated = $request->validate([
             'form_type' => 'required|string',
             'field_name' => 'required|string',
@@ -35,14 +35,14 @@ class CustomFieldController extends Controller
 
     public function update(Request $request, CustomField $field)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $field->update($request->only(['field_label', 'field_type', 'is_required', 'options', 'sort_order', 'is_active']));
         return response()->json(['message' => 'Custom field updated']);
     }
 
     public function destroy(CustomField $field)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $field->delete();
         return response()->json(['message' => 'Custom field deleted']);
     }

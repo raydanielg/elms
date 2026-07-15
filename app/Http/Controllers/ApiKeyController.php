@@ -9,14 +9,14 @@ class ApiKeyController extends Controller
 {
     public function index()
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $keys = ApiKey::where('user_id', auth()->id())->latest()->get();
         return view('api-keys.index', compact('keys'));
     }
 
     public function store(Request $request)
     {
-        $this->authorize('adminOrAbove');
+        if (!auth()->user()->hasRole(['super_admin', 'admin', 'teacher', 'solo_teacher'])) abort(403);
         $validated = $request->validate([
             'name' => 'required|string',
             'scopes' => 'nullable|array',
