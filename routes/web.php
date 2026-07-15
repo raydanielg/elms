@@ -232,4 +232,42 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
         Route::get('/audit-logs/export', [AuditLogController::class, 'export'])->name('audit-logs.export');
     });
+
+    // Recognition Engine — Certificates, Badges, Awards, Leaderboards, Points, Transcripts
+
+    // Certificates (extend existing)
+    Route::post('/certificates/{certificate}/revoke', [CertificateController::class, 'revoke'])->name('certificates.revoke');
+
+    // Certificate Templates
+    Route::get('/certificate-templates', [CertificateTemplateController::class, 'index'])->name('certificate-templates.index');
+    Route::post('/certificate-templates', [CertificateTemplateController::class, 'store'])->name('certificate-templates.store');
+    Route::put('/certificate-templates/{template}', [CertificateTemplateController::class, 'update'])->name('certificate-templates.update');
+    Route::delete('/certificate-templates/{template}', [CertificateTemplateController::class, 'destroy'])->name('certificate-templates.destroy');
+
+    // Badges
+    Route::get('/badges', [BadgeController::class, 'index'])->name('badges.index');
+    Route::post('/badges', [BadgeController::class, 'store'])->name('badges.store');
+    Route::put('/badges/{badge}', [BadgeController::class, 'update'])->name('badges.update');
+    Route::delete('/badges/{badge}', [BadgeController::class, 'destroy'])->name('badges.destroy');
+    Route::post('/badges/{badge}/rules', [BadgeController::class, 'storeRule'])->name('badges.rules.store');
+    Route::delete('/badges/{badge}/rules/{rule}', [BadgeController::class, 'destroyRule'])->name('badges.rules.destroy');
+    Route::post('/badges/award', [BadgeController::class, 'awardManual'])->name('badges.award');
+    Route::get('/trophy-case', [BadgeController::class, 'trophyCase'])->name('badges.trophy-case');
+
+    // Awards
+    Route::get('/awards', [AwardController::class, 'index'])->name('awards.index');
+    Route::post('/awards', [AwardController::class, 'store'])->name('awards.store');
+    Route::delete('/awards/{award}', [AwardController::class, 'destroy'])->name('awards.destroy');
+    Route::get('/honor-roll', [AwardController::class, 'honorRoll'])->name('awards.honor-roll');
+
+    // Leaderboards
+    Route::get('/leaderboards/tenant', [LeaderboardController::class, 'tenantLeaderboard'])->name('leaderboards.tenant');
+    Route::get('/courses/{course}/leaderboard', [LeaderboardController::class, 'courseLeaderboard'])->name('leaderboards.course');
+    Route::get('/points', [LeaderboardController::class, 'pointsHistory'])->name('points.history');
+
+    // Transcripts
+    Route::get('/transcripts', [TranscriptController::class, 'index'])->name('transcripts.index');
+    Route::post('/transcripts/generate', [TranscriptController::class, 'generate'])->name('transcripts.generate');
+    Route::get('/transcripts/{transcript}', [TranscriptController::class, 'show'])->name('transcripts.show');
+    Route::delete('/transcripts/{transcript}', [TranscriptController::class, 'destroy'])->name('transcripts.destroy');
 });
