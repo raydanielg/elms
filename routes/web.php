@@ -20,6 +20,22 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WithdrawalController;
+use App\Http\Controllers\FeatureFlagController;
+use App\Http\Controllers\PaymentGatewayController;
+use App\Http\Controllers\SmsController;
+use App\Http\Controllers\CustomFieldController;
+use App\Http\Controllers\AutomationRuleController;
+use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\ThemeController;
+use App\Http\Controllers\NotificationTemplateController;
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\ReferralController;
+use App\Http\Controllers\WebhookEndpointController;
+use App\Http\Controllers\ApiKeyController;
+use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\CourseApprovalController;
+use App\Http\Controllers\CourseVersionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
