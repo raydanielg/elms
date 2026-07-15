@@ -122,7 +122,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('min_xp')->default(0);
             $table->integer('max_xp')->default(0);
-            $string = $table->string('icon')->nullable();
+            $table->string('icon')->nullable();
             $table->json('perks')->nullable();
             $table->timestamps();
         });
