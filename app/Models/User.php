@@ -34,6 +34,16 @@ class User extends Authenticatable
         return $this->belongsTo(Tenant::class);
     }
 
+    public function instructorLevel(): BelongsTo
+    {
+        return $this->belongsTo(InstructorLevel::class);
+    }
+
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
     public function courses(): HasMany
     {
         return $this->hasMany(Course::class, 'owner_id');
@@ -42,11 +52,6 @@ class User extends Authenticatable
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class);
-    }
-
-    public function wallet(): HasOne
-    {
-        return $this->hasOne(Wallet::class);
     }
 
     public function notifications(): HasMany
