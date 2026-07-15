@@ -11,7 +11,7 @@ class PaymentGatewayController extends Controller
 {
     public function index()
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $gateways = PaymentGateway::orderBy('priority')->get();
         $manager = app(PaymentManager::class);
         $availableDrivers = $manager->availableDrivers();
@@ -20,7 +20,7 @@ class PaymentGatewayController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $validated = $request->validate([
             'driver' => 'required|string|unique:payment_gateways,driver',
             'label' => 'required|string',
@@ -37,7 +37,7 @@ class PaymentGatewayController extends Controller
 
     public function update(Request $request, PaymentGateway $gateway)
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $validated = $request->validate([
             'label' => 'string',
             'priority' => 'integer|min:0',
@@ -52,14 +52,14 @@ class PaymentGatewayController extends Controller
 
     public function destroy(PaymentGateway $gateway)
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $gateway->delete();
         return response()->json(['message' => 'Payment gateway removed']);
     }
 
     public function webhookLogs()
     {
-        $this->authorize('superAdminOnly');
+        if (!auth()->user()->isSuperAdmin()) abort(403);
         $logs = PaymentWebhookLog::latest()->paginate(50);
         return view('payment-gateways.logs', compact('logs'));
     }
