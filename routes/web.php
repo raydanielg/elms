@@ -36,6 +36,11 @@ use App\Http\Controllers\ApiKeyController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\CourseApprovalController;
 use App\Http\Controllers\CourseVersionController;
+use App\Http\Controllers\CertificateTemplateController;
+use App\Http\Controllers\BadgeController;
+use App\Http\Controllers\AwardController;
+use App\Http\Controllers\LeaderboardController;
+use App\Http\Controllers\TranscriptController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -50,6 +55,9 @@ Route::get('/marketplace/{course}', [MarketplaceController::class, 'show'])->nam
 
 // Certificate verification (public)
 Route::get('/certificates/verify/{code}', [CertificateController::class, 'verify'])->name('certificates.verify');
+
+// Transcript verification (public)
+Route::get('/transcripts/verify/{code}', [TranscriptController::class, 'verify'])->name('transcripts.verify');
 
 Route::middleware(['auth'])->group(function () {
 
