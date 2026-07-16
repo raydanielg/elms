@@ -20,7 +20,7 @@ class Lesson extends Model
 
     public function module(): BelongsTo
     {
-        return $this->belongsTo(CourseModule::class);
+        return $this->belongsTo(CourseModule::class, 'module_id');
     }
 
     public function quizzes(): HasMany
