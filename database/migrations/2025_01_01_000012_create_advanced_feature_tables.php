@@ -209,22 +209,24 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Coupons
-        Schema::create('coupons', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tenant_id')->nullable()->constrained()->nullOnDelete();
-            $table->string('code')->unique();
-            $table->string('type');
-            $table->decimal('value', 10, 2);
-            $table->decimal('min_purchase', 10, 2)->nullable();
-            $table->integer('usage_limit')->nullable();
-            $table->integer('used_count')->default(0);
-            $table->date('starts_at')->nullable();
-            $table->date('expires_at')->nullable();
-            $table->json('course_ids')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
-        });
+        // Coupons (check if already created by commerce migration)
+        if (!Schema::hasTable('coupons')) {
+            Schema::create('coupons', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('tenant_id')->nullable()->constrained()->nullOnDelete();
+                $table->string('code')->unique();
+                $table->string('type');
+                $table->decimal('value', 10, 2);
+                $table->decimal('min_purchase', 10, 2)->nullable();
+                $table->integer('usage_limit')->nullable();
+                $table->integer('used_count')->default(0);
+                $table->date('starts_at')->nullable();
+                $table->date('expires_at')->nullable();
+                $table->json('course_ids')->nullable();
+                $table->boolean('is_active')->default(true);
+                $table->timestamps();
+            });
+        }
 
         // Course Price Rules (promotions, tiered pricing)
         Schema::create('course_price_rules', function (Blueprint $table) {
