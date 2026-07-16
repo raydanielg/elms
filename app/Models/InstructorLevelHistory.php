@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class InstructorLevelHistory extends Model
 {
+    protected $table = 'instructor_level_history';
+
     protected $fillable = [
         'user_id', 'instructor_level_id', 'previous_level_id',
         'reason', 'is_manual_override', 'changed_by'
