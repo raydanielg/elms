@@ -288,14 +288,14 @@ class CourseSeeder extends Seeder
 
         // ── Notifications
         $notifications = [
-            ['user_id' => $grace->id, 'type' => 'success', 'title' => 'Lesson Completed', 'body' => 'You completed "CSS Selectors and Properties". Keep going!', 'read_at' => null],
-            ['user_id' => $grace->id, 'type' => 'info', 'title' => 'New Course Available', 'body' => 'Modern React Development is now available on the marketplace.', 'read_at' => null],
-            ['user_id' => $james->id, 'type' => 'success', 'title' => 'Certificate Earned', 'body' => 'Congratulations! You earned a certificate for Web Development Fundamentals.', 'read_at' => now()],
-            ['user_id' => $james->id, 'type' => 'info', 'title' => 'New Lesson Available', 'body' => 'A new lesson "Decision Trees and Random Forests" is now available.', 'read_at' => null],
-            ['user_id' => $amina->id, 'type' => 'info', 'title' => 'New Enrollment', 'body' => 'Neema Joseph enrolled in Web Development Fundamentals.', 'read_at' => null],
-            ['user_id' => $daniel->id, 'type' => 'success', 'title' => 'Certificate Earned', 'body' => 'You earned a certificate for Strategic Leadership in the Digital Age.', 'read_at' => now()],
-            ['user_id' => $sarahUser->id, 'type' => 'success', 'title' => 'New Sale!', 'body' => 'Lucas Anderson purchased Modern React Development. You earned $44.99.', 'read_at' => null],
-            ['user_id' => $lucas->id, 'type' => 'info', 'title' => 'Assignment Due Soon', 'body' => 'Your portfolio assignment is due in 2 weeks.', 'read_at' => null],
+            ['user_id' => $grace->id, 'type' => 'success', 'title' => 'Lesson Completed', 'message' => 'You completed "CSS Selectors and Properties". Keep going!', 'read_at' => null],
+            ['user_id' => $grace->id, 'type' => 'info', 'title' => 'New Course Available', 'message' => 'Modern React Development is now available on the marketplace.', 'read_at' => null],
+            ['user_id' => $james->id, 'type' => 'success', 'title' => 'Certificate Earned', 'message' => 'Congratulations! You earned a certificate for Web Development Fundamentals.', 'read_at' => now()],
+            ['user_id' => $james->id, 'type' => 'info', 'title' => 'New Lesson Available', 'message' => 'A new lesson "Decision Trees and Random Forests" is now available.', 'read_at' => null],
+            ['user_id' => $amina->id, 'type' => 'info', 'title' => 'New Enrollment', 'message' => 'Neema Joseph enrolled in Web Development Fundamentals.', 'read_at' => null],
+            ['user_id' => $daniel->id, 'type' => 'success', 'title' => 'Certificate Earned', 'message' => 'You earned a certificate for Strategic Leadership in the Digital Age.', 'read_at' => now()],
+            ['user_id' => $sarahUser->id, 'type' => 'success', 'title' => 'New Sale!', 'message' => 'Lucas Anderson purchased Modern React Development. You earned $44.99.', 'read_at' => null],
+            ['user_id' => $lucas->id, 'type' => 'info', 'title' => 'Assignment Due Soon', 'message' => 'Your portfolio assignment is due in 2 weeks.', 'read_at' => null],
         ];
 
         foreach ($notifications as $n) {
